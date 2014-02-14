@@ -1,0 +1,74 @@
+extends ../layouts/base
+
+block append footerscripts
+	script(type="text/javascript",src="/js/app.js")
+
+block content
+	div.jumbotron
+		div.row
+			div.col-sm-4
+				div.heading
+					div.col-sm-offset-2.col-sm-10
+						h2 Register
+				form(class="form-horizontal",role="form",action="/register",method="POST")
+					div.form-group
+						label(for="nickname",class="col-sm-2 control-label") Nickname
+						div.col-sm-10.left-inner-addon
+							i.fa.fa-user
+							input(type="text",class="form-control",id="nickname",name="nickname",placeholder="Nickname")
+					div.form-group
+						label(for="email",class="col-sm-2 control-label") Email
+						div.col-sm-5.left-inner-addon
+							i.fa.fa-envelope
+							input(type="email",class="form-control",id="email",name="email",placeholder="Email")
+						div.col-sm-5.left-inner-addon
+							i.fa.fa-envelope
+							input(type="email",class="form-control",id="email-confirm",name="email-confirm",placeholder="Confirm email")
+					div.form-group
+						label(for="password",class="col-sm-2 control-label") Password
+						div.col-sm-5.left-inner-addon
+							i.fa.fa-key
+							input(type="password",class="form-control",id="password",name="password",placeholder="Password")
+						div.col-sm-5.left-inner-addon
+							i.fa.fa-key
+							input(type="password-confirm",class="form-control",id="password-confirm",name="password-confirm",placeholder="Password Confirm")
+					div.form-group
+						div.col-sm-offset-2.col-sm-10
+							button(type="submit",class="btn btn-primary") Submit
+			div.col-sm-4
+				div.heading
+					div.col-sm-offset-2.col-sm-10
+						h2 Login
+				form(class="form-horizontal",data-async="true",role="form",action="/login",method="POST")
+					div.form-group
+						label(for="nickname",class="col-sm-2 control-label") Nickname
+						div.col-sm-10.left-inner-addon
+							i.fa.fa-user
+							input(type="text",class="form-control",id="nickname",name="nickname",placeholder="Nickname")
+					div.form-group
+						label(for="password",class="col-sm-2 control-label") Password
+						div.col-sm-10.left-inner-addon
+							i.fa.fa-key
+							input(type="password",class="form-control",id="password",name="password",placeholder="Password")
+					div.form-group
+						div.col-sm-offset-2.col-sm-10
+							div.checkbox
+								label
+									input(type="checkbox",name="remember-me",value="1")
+									| Remember me
+					div.form-group
+						div.col-sm-offset-2.col-sm-10
+							button(data-loading-text="Enviando...",autocomplete="off",type="submit",class="btn btn-primary") Submit
+			div.col-sm-4
+				div.heading
+					div.col-sm-offset-2.col-sm-10
+						h2 Oauth provider
+				div.row
+					div.col-sm-4
+						img(style="width: 140px; height: 140px;",class="img-thumbnail")
+					div.col-sm-4
+						img(style="width: 140px; height: 140px;",class="img-thumbnail")
+					div.col-sm-4
+						img(style="width: 140px; height: 140px;",class="img-thumbnail")
+
+

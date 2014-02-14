@@ -1,0 +1,10 @@
+extends ../layouts/base
+
+block content
+	fieldset
+		legend Elige un nombre de usuario
+		form(action="/register.html",method="POST")
+			div.form-group
+				abel: Nombre de usuario
+				input(type="text",placeholder="Nombre de usuario...",name="nickname",class="form_control")
+			button(type="submit",class="btn btn-primary") Entrar

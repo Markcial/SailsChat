@@ -1,0 +1,19 @@
+extends ../layouts/base
+block append headstyles
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,700italic,400,300,700',rel='stylesheet')
+
+block append footerscripts
+    script(type="text/javascript",src="/linker/js/chat.js")
+
+block content
+    div.main
+        ul(class="nav nav-tabs")
+            li.active: a(href="#") Home
+            li: a(href="#") Profile
+            li: a(href="#") Messages
+        fieldset
+            legend Chat
+            div#chatbox
+            div.controls
+                input(type="text", placeholder="say something...", id="text")
+                button(class="btn btn-primary", id="say") Send

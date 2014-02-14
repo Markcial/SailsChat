@@ -1,0 +1,45 @@
+extends ../layouts/base
+
+block append footerscripts
+	script(type="text/javascript",src="/js/chat.js")
+	script(type="text/html",id="user-template")
+		li.dropdown.user
+			a(class="dropdown-toggle",data-toggle="dropdown")
+				span(class="fa fa-fw fa-user")
+				span(class="username")
+				span.pull-right.caret
+			ul(class="dropdown-menu",role="menu")
+				li(role="presentation")
+					a(role="menuitem", data-action="talk-to", tabindex="-1", href="javascript:;")
+						span(class="fa fa-fw fa-comment")
+						| Hablar
+				li(role="presentation")
+					a(role="menuitem", data-action="mute", tabindex="-1", href="javascript:;")
+						span(class="fa fa-fw fa-microphone-slash")
+						| Ignorar
+				li(role="presentation")
+					a(role="menuitem", data-action="flag", tabindex="-1", href="javascript:;")
+						span(class="fa fa-fw fa-flag")
+						| Denunciar
+
+
+block content
+	div(class="chat-window",data-room-slug=room.slug)
+		div.chat-opened-list
+			div.heading
+				ul(class="nav nav-tabs",id="conversations")
+					li.active
+						a Sala #{room.name}
+		div.chat-body
+			div.chat-primary
+				div.chat-placeholder
+					div.chat-log-container
+						div(class="chat-log",data-which="main")
+					div.chat-controls
+						div.input-group
+							input(id="message",type="text",class="form-control",placeholder="talk!",name="message")
+							span.input-group-btn
+								button(id="talk",class="btn btn-primary",type="button") Envia
+			div.chat-secondary
+				div.chat-placeholder
+					div(class="nav nav-pills nav-stacked",id="users-list")
