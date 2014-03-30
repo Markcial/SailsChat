@@ -44,8 +44,8 @@ function Chat(io)
     this.shout = function(msg){
         socket.emit('shout',{msg:msg});
     };
-    this.talkToRoom = function(room,to,msg){
-        socket.emit(bootschat.namespaces.roomUserSays, {room:room,to:to,msg:msg});
+    this.talkToRoom = function(room,msg){
+        socket.emit(bootschat.namespaces.roomUserSays, {room:room,msg:msg});
     };
     this.muteUser = function(room, who) {
 
@@ -85,8 +85,9 @@ function Chat(io)
         $.each(users,function(i,usr){
             console.log(usr);
             var $usrTpl = $($('#user-template').text());
-            $usrTpl.data('sid',usr.sid);
-            $usrTpl.find('.username').text(usr.username);
+            $usrTpl.data('sid',usr.getSocketId());
+            $usrTpl.data('nickname',usr.getNickname());
+            $usrTpl.find('.nickname').text(usr.getNickname());
             $userList.append($usrTpl);
         });
     });
@@ -95,7 +96,7 @@ function Chat(io)
         $('.chat-log').append(p);
     });
     chat.onRoomUserLeft(function(data){
-        var p = '<p>'+data.uid+' Abandono la sala.</p>';
+        var p = '<p>'+data.nickname+' Abandono la sala.</p>';
         $('.chat-log').append(p);
     })
     chat.onRoomUserJoined(function(data){
@@ -110,7 +111,7 @@ function Chat(io)
     });
     $('#talk').on('click',function(e){
        var text = $('#message').val();
-       chat.talkToRoom(text,room);
+       chat.talkToRoom(room,text);
        $('#message').val(" ");
        return false;
     });
@@ -118,14 +119,17 @@ function Chat(io)
     $('#users-list').on('click','a[data-action]',function(e){
         var $t = $(this);
         var action = $t.data('action');
-        var sid = $t.parent('.user').data('sid');
-        var username = $t.parent('.user').data('username');
+        var sid = $t.closest('.user').data('sid');
+        var nickname = $t.closest('.user').data('nickname');
         switch(action){
             case 'talk-to':
-            var li = $('<li><a id="'+username+'">'+username+'</a></li>')
+            var $chatLog = $('.chat-log-container');
+            //if( $chatLog.find( 'div#'+nickname ).length > 0 )return;
+            var li = $('<li><a href="#'+nickname+'">'+nickname+'<button class="close" type="button">&times;</button></a></li>')
             $('#conversations').append(li);
-            $('.chat-log[data-which="main"]').hide();
-            $('.chat-log-container').append('<div class="chat-log"></div>');
+            $('.chat-log-container').append('<div class="chat-log tab-pane fade" id="'+nickname+'"></div>');
+            $('#conversations li a[href=#'+nickname+']').click();
+            ui.tabdrop.layout();
             break;
             case 'mute':
 

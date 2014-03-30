@@ -15,7 +15,7 @@ module.exports.sockets = {
   // mixes in socket.io events for your routes and blueprints automatically.
   onConnect: function(session, socket) {
 
-      ChatEventManager.onConnect(session, socket);
+      Chat.onConnect(session, socket);
 
     // By default: do nothing
     // This is a good place to subscribe a new socket to a room, inform other users that
@@ -118,11 +118,28 @@ module.exports.sockets = {
   // Primarily because of this situation, as well as a handful of other advanced
   // use cases, Sails allows you to override the authorization behavior 
   // with your own custom logic by specifying a function, e.g:
-  /*authorization: function authorizeAttemptedSocketConnection(data, accept) {
+  /*authorization: function authorizeAttemptedSocketConnection(handshakeData, accept) {
     //console.log(arguments);
-    accept(null,true);
-    //cb('mal mal mal!')
-  },*/
+    //sails.log.warn(data.headers.cookie['sails.sid']);
+
+    if (handshakeData.headers.cookie) {
+
+      handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
+      sails.log.info(handshakeData);
+
+      handshakeData.sessionID = parseSignedCookie(handshakeData.cookie['express.sid'], 'secret');
+
+      if (handshakeData.cookie['express.sid'] == handshakeData.sessionID) {
+        return accept('Cookie is invalid.', false);
+      }
+
+    } else {
+      return accept('No cookie transmitted.', false);
+    } 
+
+  accept(null, true);
+  },
+  */
   authorization:true,
 
   // Match string representing the origins that are allowed to connect to the Socket.IO server

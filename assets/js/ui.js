@@ -68,8 +68,35 @@
     ui.alerts[el] = new ContextualAlert(el);
   });
 
+  ui.tabdrop = {
+    selector:'.nav-pills, .nav-tabs',
+    options:[],
+    setOptions:function(options){
+      this.options = options;
+    },
+    setSelector:function(sel){
+      this.selector = sel;
+    },
+    init:function(sel){
+      if( typeof(sel) == 'undefined' )sel = this.selector;
+      $(sel).tabdrop(this.options);
+    },
+    layout:function(sel){
+      if( typeof(sel) == 'undefined' )sel = this.selector;
+      $(sel).tabdrop('layout');
+    }
+  };
+
   ui.quirks = function(){
       $(document).ready(function(){
+         // tabdrops
+         ui.tabdrop.setOptions({text:'<i class="fa fa-users"></i>'});
+         ui.tabdrop.init();
+         // js tabs
+         $('body').on('click','[data-role="nav-tabs"] a',function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+         });
          // async forms
          $('form[data-async]').on('submit',function(e){
             var $this = $(this);
@@ -82,15 +109,13 @@
                 },
                 data:$this.serializeArray(),
                 success:function(data, text, xhr){
-                    debugger;
                     if( data.error )
                     {
                         new ui.alerts.error( data.message, $this );
-                        debugger;
                     }
                     else
                     {
-
+                        return document.location.href = "/";
                     }
                 },
                 error:function(xhr, text, error){

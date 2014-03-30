@@ -4,7 +4,7 @@ module.exports = function isUserLoggedIn(req, res, next){
     //session.save();
     if(! session.hasOwnProperty( 'user' ) )
     {
-        //return res.redirect( '/register' );
+        return res.redirect( '/register' );
     }
     next();
 };

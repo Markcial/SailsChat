@@ -23,6 +23,10 @@ function removeRoom(id) {
 	$( '#list-rooms a[data-roomid="'+id+'"]' ).remove();
 }
 
+function cleanRooms() {
+  $( '#list-rooms a[data-roomid]').remove();
+}
+
 $('#addRoom').on('click',function(e){
     var roomName = $('#roomName').val();
     $.ajax({
@@ -49,20 +53,17 @@ $('#addRoom').on('click',function(e){
 
     socket.emit(bootschat.namespaces.joinHall);
 
-    socket.on(bootschat.namespaces.roomJoined,function(data){
+    socket.on(bootschat.namespaces.roomUserJoined,function(data){
         console.log('roomJoined');
        updateParticipants(data.room,data.participants);
     });
 
-    socket.on(bootschat.namespaces.roomLeft,function(data){
-        console.log('roomLeft');
+    socket.on(bootschat.namespaces.roomUserLeft,function(data){
+        console.log('roomLeft',data);
        updateParticipants(data.room,data.participants);
     });
 
-    socket.on('user:left:room',function(data){
-       updateParticipants(data.room,data.participants);
-    });
-
+    cleanRooms();
   	socket.request('/room',{},function(rooms){
   		$.each(rooms,function(i,el){
   			addRoom(el);

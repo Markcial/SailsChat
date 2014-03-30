@@ -30,14 +30,39 @@ module.exports = {
         return res.view('user/register');
     },
     doRegister:function(req,res){
+        // pendiente, crear usuario
+        var params = req.body;
+        sails.log.debug(params);
+        if( params['email-confirm']!=params['email']){
+            return res.json({ error: 'Email mismatch' }, 400);
+        };
+        if(params['password-confirm']!=params['password']){
+            return res.json({ error: 'Password mismatch' }, 400);
+        };
 
+        User.create({
+          nickname: params['nickname'],
+          email: params['email'],
+          password: params['password']
+        }).done(function(err, user) {
+
+          // Error handling
+          if (err) {
+            return res.json({ error: 'Server error' }, 400);
+
+          // The User was created successfully!
+          }else {
+            req.session.user = user;
+            return res.json(user);
+          }
+        });
     },
     showLogin:function(req,res){
         return res.redirect('/register');
         //return res.view( 'user/login' );
     },
     doLogin: function(req, res) {
-        var bcrypt = require('bcryptjs');
+        var bcrypt = require('bcrypt');
         var nickname = req.param('nickname');
         var password = req.param('password');
         User.findOneByNickname(nickname).done(function(err, user){

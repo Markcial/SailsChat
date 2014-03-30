@@ -25,7 +25,6 @@ module.exports = {
         .replace(/[^\w ]+/g,'')
         .replace(/ +/g,'-');
     };
-    //   console.log(values);
     next();
   },
   connect:function(socket){
